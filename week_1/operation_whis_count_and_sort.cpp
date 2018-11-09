@@ -8,12 +8,13 @@ int main() {
     vector<int> nums = {1, 5, 4, 3, 7, 8, -9};
     for (int c : nums) {
         cout << c << ", ";
-    };
+    }
     cout << endl;
+    
     string s = "abcdefghjklmnopqrstuvwxyz";
     for (auto c : s) {
         cout << c << ", ";
-    };
+    }
     cout << endl;
 
     int quantity = 0;
