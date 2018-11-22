@@ -14,11 +14,14 @@ int main () {
     famous_persons.insert("Gorishniy");
     famous_persons.insert("Kornev");
     famous_persons.insert("Orlov");
+    famous_persons.insert("Kornev");
+    famous_persons.insert("a");
     famous_persons.erase("Orlovs");
     PrintSet(famous_persons);
     cout << famous_persons.count("Kornev") << endl;
 
     vector<string> vec = {"a", "b", "c", "d", "a"};
     set<string> alf(begin(vec), end(vec));
+    PrintSet(alf);
     return 0;
 }

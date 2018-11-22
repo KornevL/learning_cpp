@@ -23,17 +23,21 @@ public:
             if (m.first <= year) {
                 first_n = m.second;
                 trig1 = 1;
+            } else {
+                break;
             }
         }
-
+        //break;!!!!!
         for (const auto& m: last) {
             if (m.first <= year) {
                 second_n = m.second;
                 trig2 = 1;
+            } else {
+                break;
             }
         }
-         
-        if (trig1 == 0 && trig2 == 0) {
+        //first_n.empty()!!!!!
+        if (first_n.empty() && trig2 == 0) {
             pull = "Incognito";
             return pull;
         } else if (trig1 == 0) {
