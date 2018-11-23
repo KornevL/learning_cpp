@@ -19,17 +19,17 @@ string GetFN (const map<int,string>& vec, int y) {
 
 string GetFNWH (const map<int,string>& vec, int y) {
     vector <string> set_hist;
-    string her_hist;
+    string her_hist, trig;
     for (const auto& m: vec) {
-        if (m.first <= y && m.second != set_hist.back()) {
+        if (m.first <= y && m.second != trig) {
             set_hist.push_back(m.second);
+            trig = m.second;
         }
     }
     if (!set_hist.empty()) {
         set_hist.resize(set_hist.size() - 1);
     }
 
-    // reverse(begin(names), end(names));
     string a;
     for (int i = 0; i < set_hist.size() / 2; i++) {
         a = set_hist[i];
@@ -49,13 +49,20 @@ string GetFNWH (const map<int,string>& vec, int y) {
 
 class Person {
 public:
+    Person (const string& name, const string& famil, int year) {
+        first[year] = name;
+        last[year] = famil;
+        yeah = year;
+    }
     void ChangeFirstName(int year, const string& first_name) {
+        if (year > yeah)
         first[year]= first_name;
     }
     void ChangeLastName(int year, const string& last_name) {
+        if (year > yeah)
         last[year]= last_name;
     }
-    string GetFullName(int year) {
+    string GetFullName(int year) const {
         string pull;
 
         string first_n = GetFN(first, year);
@@ -63,7 +70,7 @@ public:
         string second_n = GetFN(last, year);
 
         if (first_n.empty() && second_n.empty()) {
-            pull = "Incognito";
+            pull = "No person";
             return pull;
         } else if (first_n.empty()) {
             pull = second_n + " with unknown first name";
@@ -77,7 +84,7 @@ public:
         }
     }
 
-    string GetFullNameWithHistory(int year) {
+    string GetFullNameWithHistory (int year) const{
         string pull;
         
         string first_n = GetFN(first, year);
@@ -89,7 +96,7 @@ public:
         string last_set = GetFNWH(last, year);
 
         if (first_n.empty() && second_n.empty()) {
-            pull = "Incognito";
+            pull = "No person";
             return pull;
         } else if (first_n.empty()) {
             pull = second_n + last_set + " with unknown first name";
@@ -106,59 +113,32 @@ private:
     
     map<int,string> first;
     map<int,string> last;
-
+    int yeah;
 };
 
+// При получении на вход года, который меньше года рождения:
+
+// методы ChangeFirstName и ChangeLastName должны игнорировать запрос.
+// Кроме того, необходимо объявить константными все методы, которые по сути ими являются.
 /*
 int main() {
-  Person person;
-  
-  person.ChangeFirstName(1965, "Polina");
-  person.ChangeLastName(1967, "Sergeeva");
-  for (int year : {1900, 1965, 1990}) {
+  Person person("Polina", "Sergeeva", 1960);
+  for (int year : {1959, 1960}) {
     cout << person.GetFullNameWithHistory(year) << endl;
   }
-  
-  person.ChangeFirstName(1970, "Appolinaria");
-  for (int year : {1969, 1970}) {
+  person.ChangeFirstName(1900, "A111ppolinaria");
+  person.ChangeFirstName(1965, "Appolinaria");
+  person.ChangeLastName(1967, "Ivanova");
+  for (int year : {1965, 1967}) {
     cout << person.GetFullNameWithHistory(year) << endl;
   }
-  
-  person.ChangeLastName(1968, "Volkova");
-  for (int year : {1969, 1970}) {
-    cout << person.GetFullNameWithHistory(year) << endl;
-  }
-  
-  person.ChangeFirstName(1990, "Polina");
-  person.ChangeLastName(1990, "Volkova-Sergeeva");
-  cout << person.GetFullNameWithHistory(1990) << endl;
-  
-  person.ChangeFirstName(1966, "Pauline");
-  cout << person.GetFullNameWithHistory(1966) << endl;
-  
-  person.ChangeLastName(1960, "Sergeeva");
-  for (int year : {1960, 1967}) {
-    cout << person.GetFullNameWithHistory(year) << endl;
-  }
-  
-  person.ChangeLastName(1961, "Ivanova");
-  cout << person.GetFullNameWithHistory(1967) << endl;
-  
+
   return 0;
 }
 */
+// OUTOUT:
 
-// OUTPUT:
-
-// Incognito
-// Polina with unknown last name
-// Polina Sergeeva
+// No person
 // Polina Sergeeva
 // Appolinaria (Polina) Sergeeva
-// Polina Volkova (Sergeeva)
-// Appolinaria (Polina) Volkova (Sergeeva)
-// Polina (Appolinaria, Polina) Volkova-Sergeeva (Volkova, Sergeeva)
-// Pauline (Polina) with unknown last name
-// Sergeeva with unknown first name
-// Pauline (Polina) Sergeeva
-// Pauline (Polina) Sergeeva (Ivanova, Sergeeva)
+// Appolinaria (Polina) Ivanova (Sergeeva)

@@ -7,6 +7,11 @@ using namespace std;
 
 class Route { 
     public:
+    Route () {}
+    Route (const string& new_sourse, const string& new_destination) {
+        source = new_sourse;
+        SetDestination(new_destination);
+    }
     string GetSource() {
         return source; 
     }
